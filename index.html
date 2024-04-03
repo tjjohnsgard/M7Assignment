@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M7 Assignment: The Employee Management Application</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+   
+  <style>
+        .card           {border: 1px solid black;}
+        output          {font-size: 0.8em;}
+    </style>
+  
+    <script src="js/script.js" defer></script>
+</head>
+  
+<body>
+
+    <header id="main-header" class="bg-dark text-white p-4 mb-3">
+        <div class="container-fluid">
+          
+            <h1 class="header-title">The Employee Management Application</h1>
+        </div>
+    </header>
+
+<!-- Add Employee -->
+      <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4 col-md-12 mb-4">
+                <div id="main" class="card card-body">
+                  
+<form id="addEmployeeForm">
+  <h2 class="title mb-4">Add Employee</h2>
+    <label for="employeeID">8-Digit Employee ID</label><br>
+    <input type="text" maxlength="8" id="employeeID" pattern="\d{8}" required><br><br>
+    
+    <label for="fullName">Full Name</label><br>
+    <input type="text" id="fullName" required><br><br>
+    
+    <label for="extension">4-Digit Extension</label><br>
+    <input type="text" id="extension" pattern="\d{4}" required><br><br>
+    
+    <label for="email">Email</label><br>
+    <input type="email" id="email" required><br><br>
+    
+    <label for="department">Department</label><br>
+    <select id="department" required>
+    
+        <option value="administrative">Administrative</option>
+        <option value="engineering">Engineering</option>
+        <option value="executive">Executive</option>
+        <option value="marketing">Marketing</option>
+        <option value="QA">Quality Assurance</option>
+        <option value="sales">Sales</option>
+    </select><br><br>
+    
+    <input type="submit" class="btn btn-dark" value="Add Employee">
+                  </form>
+              </div>
+          </div>
+          </div>
+        </div>
+<hr>
+
+<!-- Employee Table -->
+<div class="col-lg-8 col-md-12">
+<div id="main" class="card card-body">
+<h2 class="title mb-4">Employees</h2>
+<p>Total Employees: <output id="totalEmployees">0</output></p>
+<table id="employeeTable" class="table table-striped">
+   
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Ext</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody id="employeeTableBody"></tbody>
+</table>
+  </form>
+          </div>
+        </div>
+
+<script>
+    const addEmployeeForm = document.getElementById('addEmployeeForm');
+    const employeeTable = document.getElementById('employeeTable');
+    const employeeTableBody = document.getElementById('employeeTableBody');
+    const totalEmployeesOutput = document.getElementById('totalEmployees');
+    let employeeCount = 0;
+
+    addEmployeeForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const employeeID = document.getElementById('employeeID').value;
+        const fullName = document.getElementById('fullName').value;
+        const extension = document.getElementById('extension').value;
+        const email = document.getElementById('email').value;
+        const department = document.getElementById('department').value;
+
+        const newRow = employeeTableBody.insertRow();
+        newRow.innerHTML = `
+            <td>${employeeID}</td>
+            <td>${fullName}</td>
+            <td>${extension}</td>
+            <td>${email}</td>
+            <td>${department}</td>
+
+<td><button class="deleteBtn">Delete</button></td>
+        `;
+
+        employeeCount++;
+        totalEmployeesOutput.textContent = employeeCount;
+
+        addEmployeeForm.reset();
+        document.getElementById('employeeID').focus();
+    });
+
+    employeeTableBody.addEventListener('click', function(event) {
+        if (event.target.classList.contains('deleteBtn')) {
+            if (confirm('Are you sure you want to delete this employee?')) {
+                const row = event.target.closest('tr');
+                row.remove();
+                employeeCount--;
+                totalEmployeesOutput.textContent = employeeCount;
+            }
+        }
+    });
+</script>
+</body>
+</html>
